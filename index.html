@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>✨ Dayerlyn · Universo Infinito ✨</title>
+    <!-- Fuentes elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #030108;
+            font-family: 'Montserrat', sans-serif;
+            color: #f3e9ff;
+            overflow-x: hidden;
+            position: relative;
+            touch-action: pan-y;
+        }
+
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .galaxy-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            backdrop-filter: blur(1px);
+        }
+
+        /* Saturno interactivo */
+        .saturn-section {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .saturn-container {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 30px rgba(216, 180, 254, 0.7));
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .saturn-container:hover {
+            transform: scale(1.05);
+        }
+
+        #saturn-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            animation: rotatePlanet 20s linear infinite;
+        }
+
+        @keyframes rotatePlanet {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Título principal */
+        .galaxy-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #fde2f3 0%, #e9d4ff 60%, #d9b8ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #c084fc, 0 0 45px #d8b4fe;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+            line-height: 1.2;
+            animation: softGlow 5s infinite alternate;
+        }
+
+        @keyframes softGlow {
+            0% { text-shadow: 0 0 10px #f5d0fe, 0 0 25px #c084fc, 0 0 35px #a855f7; }
+            100% { text-shadow: 0 0 20px #fbcfe8, 0 0 40px #e879f9, 0 0 60px #d946ef; }
+        }
+
+        .cosmic-card {
+            background: rgba(18, 7, 28, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(216, 180, 254, 0.55);
+            border-radius: 48px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px rgba(192, 132, 252, 0.35), inset 0 0 20px rgba(255,215,245,0.2);
+            max-width: 750px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s;
+            margin: 0.5rem 0;
+        }
+
+        .countdown-wrapper {
+            margin: 0.5rem 0 1.2rem;
+        }
+
+        .countdown-hint {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: #d9c2f0;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .countdown-digits {
+            display: flex;
+            justify-content: center;
+            gap: clamp(0.5rem, 3vw, 1.5rem);
+            flex-wrap: wrap;
+        }
+
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 65px;
+        }
+
+        .time-number {
+            font-size: clamp(2.2rem, 8vw, 4.5rem);
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fde68a 0%, #fbcfe8 60%, #e9b2ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            text-shadow: 0 0 20px #fbbf24;
+            letter-spacing: 3px;
+        }
+
+        .time-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #e2c2ff;
+            text-shadow: 0 0 8px #a78bfa;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .narrative-box {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .phrase {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+            font-weight: 600;
+            color: #ffe7b0;
+            text-shadow: 0 0 15px #f472b6, 0 0 30px #d946ef;
+            transition: opacity 0.8s ease-in-out;
+            opacity: 1;
+            padding: 0 0.5rem;
+            line-height: 1.4;
+        }
+
+        .heart-core {
+            margin: 1.5rem 0 0.8rem;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 0 20px #fb7185);
+        }
+        .heart-core i {
+            font-size: 3.5rem;
+            color: #ffb7c5;
+            background: radial-gradient(circle at 30% 30%, #ffe4f0, #f9a8d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px #f43f5e;
+            transition: 0.2s;
+        }
+        .heart-core:hover i {
+            transform: scale(1.15);
+            text-shadow: 0 0 45px #fb7185;
+        }
+        .heart-core:active i {
+            transform: scale(0.95);
+        }
+
+        /* Mensaje de cumpleaños (SORPRESA) */
+        .birthday-message {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 9vw, 4.2rem);
+            font-weight: 700;
+            color: #ffecb3;
+            text-shadow: 0 0 30px #fbbf24, 0 0 60px #f472b6, 0 0 90px #d946ef;
+            margin: 1.5rem 0;
+            line-height: 1.3;
+            letter-spacing: 2px;
+            animation: birthdayPulse 2.2s infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes birthdayPulse {
+            from { text-shadow: 0 0 20px #fde68a, 0 0 40px #f472b6, 0 0 70px #c084fc; transform: scale(1); }
+            to { text-shadow: 0 0 35px #fef9c3, 0 0 65px #fb7185, 0 0 100px #a78bfa; transform: scale(1.02); }
+        }
+
+        .perfect-message {
+            margin-top: 15px;
+            font-size: 1.6rem;
+            font-family: 'Dancing Script', cursive;
+            color: #ffe9b0;
+            text-shadow: 0 0 15px #f59e0b;
+            opacity: 0;
+            transition: opacity 0.4s;
+            min-height: 3rem;
+            pointer-events: none;
+        }
+        .perfect-message.show {
+            opacity: 1;
+        }
+
+        /* Sección lunar */
+        .moon-section {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.4rem;
+            color: #f3e9ff;
+            text-shadow: 0 0 15px #c084fc;
+            padding: 0.8rem 1.5rem;
+            background: rgba(25, 10, 35, 0.3);
+            border-radius: 60px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(216, 180, 254, 0.3);
+        }
+
+        #moon-phase-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .footnote {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #bfa0e6;
+            opacity: 0.7;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .cosmic-card {
+                padding: 1.8rem 1rem;
+                border-radius: 36px;
+            }
+            .time-block {
+                min-width: 55px;
+            }
+            .saturn-container {
+                max-width: 180px;
+            }
+        }
+
+        /* Estela de corazones */
+        .trail-heart {
+            position: fixed;
+            font-size: 22px;
+            pointer-events: none;
+            z-index: 9999;
+            color: #fbcfe8;
+            filter: drop-shadow(0 0 12px #f472b6);
+            animation: floatUpFade 1.2s ease-out forwards;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+
+        @keyframes floatUpFade {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            70% { opacity: 0.7; transform: translate(-8px, -35px) scale(1.1); }
+            100% { opacity: 0; transform: translate(-15px, -70px) scale(0.6); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="star-canvas"></canvas>
+
+    <div class="galaxy-container">
+        <!-- Saturno interactivo (clic para cambiar imagen) -->
+        <div class="saturn-section">
+            <div class="saturn-container" id="saturnContainer">
+                <img id="saturn-img" src="https://www.pngplay.com/wp-content/uploads/1/Saturn-PNG-Photo-Image.png" alt="Saturno" style="width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <h1 class="galaxy-title">✨ Dayerlyn · Universo Infinito ✨</h1>
+
+        <div class="cosmic-card">
+            <!-- SECCIÓN CONTADOR -->
+            <div id="countdownSection">
+                <div class="countdown-wrapper">
+                    <div class="countdown-hint">
+                        <i class="fa-regular fa-star"></i> constelación próxima <i class="fa-regular fa-star"></i>
+                    </div>
+                    <div class="countdown-digits" id="countdownDisplay">
+                        <div class="time-block"><span class="time-number" id="days">00</span><span class="time-label">Días</span></div>
+                        <div class="time-block"><span class="time-number" id="hours">00</span><span class="time-label">Horas</span></div>
+                        <div class="time-block"><span class="time-number" id="minutes">00</span><span class="time-label">Minutos</span></div>
+                        <div class="time-block"><span class="time-number" id="seconds">00</span><span class="time-label">Segundos</span></div>
+                    </div>
+                </div>
+
+                <div class="narrative-box">
+                    <div class="phrase" id="narrativePhrase">Dayerlyn, mi princesa</div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN SORPRESA -->
+            <div id="birthdaySection" class="hidden">
+                <div class="birthday-message" id="birthdayText">
+                    ¡Feliz cumpleaños, te amo!
+                </div>
+            </div>
+
+            <!-- Corazón interactivo -->
+            <div class="heart-core" id="centralHeart">
+                <i class="fas fa-heart"></i>
+            </div>
+
+            <div class="perfect-message" id="perfectMessage">Eres perfecta tal como eres</div>
+
+            <!-- Sección lunar (fase real) -->
+            <div class="moon-section">
+                <span id="moon-emoji">🌕</span>
+                <span id="moon-phase-text">Luna Llena</span>
+            </div>
+
+            <div class="footnote">
+                <i class="fa-regular fa-moon"></i>   un destello en el cosmos   <i class="fa-regular fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            "use strict";
+
+            // ---------- CONFIGURACIÓN ----------
+            const TARGET_MONTH = 10;    // Noviembre
+            const TARGET_DAY = 2;
+
+            const PHRASES = [
+                "Dayerlyn, mi princesa",
+                "La mejor maestra del mundo",
+                "Mi salvavidas",
+                "Lo daría todo por ti",
+                "Contigo todo es un sí",
+                "Eres única"
+            ];
+
+            // Imágenes de Saturno (gratuitas y con licencia libre) para rotar al hacer clic
+            const SATURN_IMAGES = [
+                "https://www.pngplay.com/wp-content/uploads/1/Saturn-PNG-Photo-Image.png",
+                "https://www.pngplay.com/wp-content/uploads/5/Saturn-Transparent-File.png",
+                "https://www.pngplay.com/wp-content/uploads/5/Saturn-Transparent-Images.png",
+                "https://www.freepnglogos.com/uploads/saturn-png/saturn-png-transparent-image-pngpix-13.png"
+            ];
+
+            // Elementos DOM
+            const countdownSection = document.getElementById('countdownSection');
+            const birthdaySection = document.getElementById('birthdaySection');
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const narrativePhrase = document.getElementById('narrativePhrase');
+            const birthdayText = document.getElementById('birthdayText');
+            const centralHeart = document.getElementById('centralHeart');
+            const perfectMessageDiv = document.getElementById('perfectMessage');
+            const saturnImg = document.getElementById('saturn-img');
+            const moonEmoji = document.getElementById('moon-emoji');
+            const moonPhaseText = document.getElementById('moon-phase-text');
+
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let isTargetDate = false;
+            let phraseIndex = 0;
+            let phraseInterval = null;
+            let countdownTimer = null;
+            let animationFrame = null;
+            let stars = [];
+            let currentSaturnIndex = 0;
+
+            // ---------- DETECCIÓN DE FECHA ESPECIAL (2 de nov) ----------
+            function isSpecialDate() {
+                const now = new Date();
+                return (now.getMonth() === TARGET_MONTH && now.getDate() === TARGET_DAY);
+            }
+
+            function getNextTargetDate() {
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                let target = new Date(currentYear, TARGET_MONTH, TARGET_DAY, 0, 0, 0, 0);
+                
+                if (!isSpecialDate() && now > target) {
+                    target = new Date(currentYear + 1, TARGET_MONTH, TARGET_DAY, 0, 0, 0, 0);
+                }
+                return target;
+            }
+
+            // ---------- ACTUALIZAR UI (contador o mensaje sorpresa) ----------
+            function updateUIMode() {
+                const special = isSpecialDate();
+                isTargetDate = special;
+                
+                if (special) {
+                    countdownSection.classList.add('hidden');
+                    birthdaySection.classList.remove('hidden');
+                    if (phraseInterval) {
+                        clearInterval(phraseInterval);
+                        phraseInterval = null;
+                    }
+                    if (countdownTimer) {
+                        clearInterval(countdownTimer);
+                        countdownTimer = null;
+                    }
+                } else {
+                    countdownSection.classList.remove('hidden');
+                    birthdaySection.classList.add('hidden');
+                    
+                    if (!phraseInterval) {
+                        startPhraseRotation();
+                    }
+                    if (!countdownTimer) {
+                        startCountdown();
+                    }
+                }
+            }
+
+            function startPhraseRotation() {
+                narrativePhrase.style.opacity = '1';
+                narrativePhrase.textContent = PHRASES[0];
+                phraseIndex = 0;
+                
+                phraseInterval = setInterval(() => {
+                    narrativePhrase.style.opacity = '0';
+                    setTimeout(() => {
+                        phraseIndex = (phraseIndex + 1) % PHRASES.length;
+                        narrativePhrase.textContent = PHRASES[phraseIndex];
+                        narrativePhrase.style.opacity = '1';
+                    }, 300);
+                }, 3800);
+            }
+
+            function updateCountdownDisplay() {
+                if (isTargetDate) return;
+                const target = getNextTargetDate();
+                const now = new Date();
+                const diff = target - now;
+                
+                if (diff <= 0) {
+                    updateUIMode();
+                    return;
+                }
+                
+                const totalSeconds = Math.floor(diff / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                daysEl.textContent = days.toString().padStart(2, '0');
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }
+
+            function startCountdown() {
+                updateCountdownDisplay();
+                countdownTimer = setInterval(() => {
+                    const nowSpecial = isSpecialDate();
+                    if (nowSpecial !== isTargetDate) {
+                        updateUIMode();
+                    }
+                    if (!isTargetDate) {
+                        updateCountdownDisplay();
+                    } else {
+                        if (countdownTimer) {
+                            clearInterval(countdownTimer);
+                            countdownTimer = null;
+                        }
+                    }
+                }, 1000);
+            }
+
+            function showPerfectMessage() {
+                perfectMessageDiv.classList.add('show');
+                setTimeout(() => {
+                    perfectMessageDiv.classList.remove('show');
+                }, 2800);
+            }
+
+            // Cambiar imagen de Saturno al hacer clic
+            function changeSaturnImage() {
+                currentSaturnIndex = (currentSaturnIndex + 1) % SATURN_IMAGES.length;
+                saturnImg.src = SATURN_IMAGES[currentSaturnIndex];
+            }
+
+            // ---------- CÁLCULO DE FASE LUNAR (algoritmo simple pero efectivo) ----------
+            function calculateMoonPhase(date) {
+                // Algoritmo de Conway para la fase lunar
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                
+                let c = 0;
+                let e = 0;
+                let jd = 0;
+                let b = 0;
+                
+                if (month < 3) {
+                    year--;
+                    month += 12;
+                }
+                
+                const a = Math.floor(year / 100);
+                b = Math.floor(a / 4);
+                c = 2 - a + b;
+                e = Math.floor(365.25 * (year + 4716));
+                const f = Math.floor(30.6001 * (month + 1));
+                jd = c + day + e + f - 1524.5;
+                
+                const daysSinceNew = jd - 2451549.5;
+                const newMoons = daysSinceNew / 29.53;
+                let phase = newMoons - Math.floor(newMoons);
+                
+                // Determinar fase y emoji
+                let phaseName = '';
+                let emoji = '';
+                
+                if (phase < 0.03 || phase >= 0.97) {
+                    phaseName = 'Luna Nueva';
+                    emoji = '🌑';
+                } else if (phase < 0.22) {
+                    phaseName = 'Creciente';
+                    emoji = '🌒';
+                } else if (phase < 0.28) {
+                    phaseName = 'Cuarto Creciente';
+                    emoji = '🌓';
+                } else if (phase < 0.47) {
+                    phaseName = 'Gibosa Creciente';
+                    emoji = '🌔';
+                } else if (phase < 0.53) {
+                    phaseName = 'Luna Llena';
+                    emoji = '🌕';
+                } else if (phase < 0.72) {
+                    phaseName = 'Gibosa Menguante';
+                    emoji = '🌖';
+                } else if (phase < 0.78) {
+                    phaseName = 'Cuarto Menguante';
+                    emoji = '🌗';
+                } else {
+                    phaseName = 'Menguante';
+                    emoji = '🌘';
+                }
+                
+                return { phaseName, emoji };
+            }
+
+            function updateMoonPhase() {
+                const now = new Date();
+                const moonData = calculateMoonPhase(now);
+                moonEmoji.textContent = moonData.emoji;
+                moonPhaseText.textContent = moonData.phaseName;
+            }
+
+            // ---------- ESTRELLAS TITILANTES ----------
+            function initStars() {
+                const count = Math.floor(window.innerWidth * window.innerHeight / 3500) + 50;
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2.5 + 0.8,
+                        baseBrightness: Math.random() * 0.6 + 0.3,
+                        speed: 0.002 + Math.random() * 0.018,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+
+            function drawStars() {
+                if (!ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const time = Date.now() * 0.002;
+                
+                stars.forEach(star => {
+                    const twinkle = Math.sin(time * star.speed + star.phase) * 0.25 + 0.75;
+                    const alpha = Math.min(star.baseBrightness * twinkle, 0.95);
+                    const hue = (star.x * 0.02 + star.y * 0.01) % 70 + 280;
+                    const color = `hsla(${hue}, 75%, 75%, ${alpha})`;
+                    
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = '#e9b2ff';
+                    ctx.shadowBlur = 10 * alpha;
+                    ctx.fill();
+                });
+                
+                ctx.shadowBlur = 0;
+                animationFrame = requestAnimationFrame(drawStars);
+            }
+
+            // ---------- ESTELA DE CORAZONES ----------
+            function createHeartTrail(x, y) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'trail-heart';
+                heart.style.left = (x - 15) + 'px';
+                heart.style.top = (y - 15) + 'px';
+                heart.style.fontSize = (18 + Math.floor(Math.random() * 14)) + 'px';
+                heart.style.color = `hsl(${320 + Math.random() * 30}, 80%, 75%)`;
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    if (heart.parentNode) heart.remove();
+                }, 1100);
+            }
+
+            let lastTrailTime = 0;
+            const TRAIL_THROTTLE = 50;
+            
+            function handleMove(clientX, clientY) {
+                const now = Date.now();
+                if (now - lastTrailTime > TRAIL_THROTTLE) {
+                    createHeartTrail(clientX, clientY);
+                    lastTrailTime = now;
+                }
+            }
+
+            // ---------- EVENTOS ----------
+            centralHeart.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showPerfectMessage();
+            });
+
+            birthdayText.addEventListener('click', () => {
+                showPerfectMessage();
+            });
+
+            document.getElementById('saturnContainer').addEventListener('click', (e) => {
+                e.stopPropagation();
+                changeSaturnImage();
+            });
+
+            window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            window.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    handleMove(touch.clientX, touch.clientY);
+                }
+            }, { passive: true });
+            window.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    createHeartTrail(touch.clientX, touch.clientY);
+                }
+            }, { passive: true });
+
+            // ---------- INICIO ----------
+            function init() {
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                updateUIMode();
+                updateMoonPhase();
+                animationFrame = requestAnimationFrame(drawStars);
+            }
+
+            init();
+
+            window.addEventListener('beforeunload', () => {
+                if (animationFrame) cancelAnimationFrame(animationFrame);
+                if (countdownTimer) clearInterval(countdownTimer);
+                if (phraseInterval) clearInterval(phraseInterval);
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    updateUIMode();
+                    updateMoonPhase();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
